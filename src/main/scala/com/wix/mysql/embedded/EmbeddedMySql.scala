@@ -20,6 +20,8 @@ class EmbeddedMySql(config: Config) {
   val mysqld = new MysqldResource(config.dbDir)
   val dataDir = new File(config.dbDir, "data")
 
+  start()
+
   def start() {
     Class.forName(DRIVER)
     mysqld.start("embedded-mysql", config.toProps.asJava)

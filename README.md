@@ -20,4 +20,13 @@ To connect to the DB (for instance, for creating fixtures), call `MySql.dataSour
 
 Caveats
 =======
-Not tested on Windows machines and would probably not work properly.
+ * Not tested on Windows machines and would probably not work properly.
+
+Credits
+=======
+ * [Yoav Abrahami](https://github.com/yoavaa) for initially coming up with the idea back in 2011
+ * [Groupon](https://github.com/groupon/mysql-junit4) for demonstrating it's possible to gracefully stop the mysql daemon
+
+Roeadmap
+========
+Migration integration
