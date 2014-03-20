@@ -11,10 +11,11 @@ case class Config(username: String = "auser",
                   password: String = "sa",
                   host: String = "localhost",
                   port: Int = 3336,
-                  dbName: String = "test_db",
+                  initialDBName: String = "test_db",
                   dbDir: File = TempDirResolver.tempSubdir("embedded-mysql")) {
 
-  val url = s"jdbc:mysql:mxj://$host:$port/$dbName?server.basedir=$dbDir&createDatabaseIfNotExist=true&server.initialize-user=true"
+  def url = urlFor(initialDBName)
+  def urlFor(dbName: String) = s"jdbc:mysql:mxj://$host:$port/$dbName?server.basedir=$dbDir&createDatabaseIfNotExist=true&server.initialize-user=true"
 
   def validate() {
 
@@ -23,7 +24,7 @@ case class Config(username: String = "auser",
     require(nonBlank(username), "Username must not be empty")
     require(nonBlank(password), "Password must not be empty")
     require(nonBlank(host), "Host must not be empty")
-    require(nonBlank(dbName), "dbName must not be empty")
+    require(nonBlank(initialDBName), "initialDBName must not be empty")
   }
 
   import com.mysql.management.MysqldResourceI._
@@ -33,4 +34,8 @@ case class Config(username: String = "auser",
     INITIALIZE_USER_NAME -> username,
     INITIALIZE_PASSWORD -> password
   )
+}
+
+object Config {
+  val Default = Config()
 }

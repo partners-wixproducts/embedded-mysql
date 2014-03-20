@@ -10,7 +10,10 @@ import java.io.File
  * @since 3/20/14
  */
 
-class EmbeddedMySql(config: Config = Config()) {
+class EmbeddedMySql(config: Config) {
+
+  def this() = this(Config.Default) // for Java interop
+
   val DRIVER = "com.mysql.jdbc.Driver"
 
   config.validate()
@@ -26,10 +29,12 @@ class EmbeddedMySql(config: Config = Config()) {
     }
   }
 
-  lazy val dataSource = {
+  lazy val dataSource = dataSourceFor(config.initialDBName)
+
+  def dataSourceFor(dbName: String) = {
     val ds = new MysqlDataSource
     import config._
-    ds.setUrl(url)
+    ds.setUrl(urlFor(dbName))
     ds.setUser(username)
     ds.setPassword(password)
     ds
