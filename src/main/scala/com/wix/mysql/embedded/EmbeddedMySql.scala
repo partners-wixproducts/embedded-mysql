@@ -23,6 +23,8 @@ class EmbeddedMySql(config: Config) {
   start()
 
   def start() {
+    deleteDataDir()
+
     Class.forName(DRIVER)
     mysqld.start("embedded-mysql", config.toProps.asJava)
 
@@ -46,6 +48,10 @@ class EmbeddedMySql(config: Config) {
     dataDir.deleteOnExit()
     mysqld.shutdown()
     while (mysqld.isRunning) { Thread.sleep(100) }
+    deleteDataDir()
+  }
+
+  def deleteDataDir() {
     import scala.sys.process._
     Seq("rm", "-rf", dataDir.getAbsolutePath).!
   }
